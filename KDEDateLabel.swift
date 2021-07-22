@@ -15,14 +15,12 @@ private class WeakReferencer<T: NSObject>: NSObject {
 
     private(set) weak var value: T?
     private let _hash: Int
-    private let _hashValue: Int
 
     // MARK: Initialization
 
     init(value: T) {
         self.value = value
         self._hash = value.hash
-        self._hashValue = value.hashValue
         super.init()
     }
 
@@ -34,10 +32,6 @@ private class WeakReferencer<T: NSObject>: NSObject {
 
     override var hash: Int {
         return _hash
-    }
-
-    override var hashValue: Int {
-        return _hashValue
     }
 }
 
@@ -67,7 +61,7 @@ private class DateLabelsHolder: NSObject {
     }
 
     func removeReferencer(_ referencer: WeakReferencer<DateLabel>) {
-        if let index = dateLabels.index(of: referencer) {
+        if let index = dateLabels.firstIndex(of: referencer) {
             dateLabels.remove(at: index)
         }
         dateLabels = dateLabels.filter { $0.value != nil }
@@ -84,7 +78,7 @@ private class DateLabelsHolder: NSObject {
             userInfo: nil,
             repeats: true)
         timer = newTimer
-        RunLoop.main.add(newTimer, forMode: .commonModes)
+        RunLoop.main.add(newTimer, forMode: .common)
     }
 
     @objc private func refreshLabels(_: Any) {
@@ -129,7 +123,7 @@ open class DateLabel: UILabel {
 
     // MARK: Configuration
 
-    open static var refreshFrequency: TimeInterval = 0.2 {
+    public static var refreshFrequency: TimeInterval = 0.2 {
         didSet {
             DateLabelsHolder.instance.createNewTimer()
         }
