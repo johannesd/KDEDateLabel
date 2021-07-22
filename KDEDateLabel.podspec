@@ -11,7 +11,7 @@ Pod::Spec.new do |s|
 # Source Info
   s.platform     =  :ios, '8.0'
   s.source       =  {
-    :git => 'https://github.com/delannoyk/KDEDateLabel.git',
+    :git => 'https://github.com/johannesd/KDEDateLabel',
     :tag => s.version.to_s
   }
   s.source_files = 'KDEDateLabel.swift'
